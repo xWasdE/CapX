@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gelişmiş Risk Yönetimi (Hedge) Hesaplayıcı - CapX</title>
+    <meta name="description" content="CapX Risk Yönetimi Hesaplayıcı ile çoklu senaryo desteğiyle yatırım dağılımı yaparak potansiyel kâr/zarar durumlarını simüle edin. Gelişmiş finansal risk yönetimi ve arbitraj hesaplama aracı.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="background-glow"></div>
+    <div class="background-stars"></div> 
+
+    <div id="help-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nasıl Çalışır?</h2>
+                <button id="modal-close-btn" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Bu araç, birden fazla olası sonuca yatırım yaparak riski yönetmenize veya garantili kâr fırsatları (arbitraj) aramanıza yardımcı olur.</p>
+                
+                <h4>Temel Kavramlar</h4>
+                <ul>
+                    <li><strong>Ana Olasılık:</strong> Yüksek getiri beklediğiniz ancak riskli olan ana yatırımınız.</li>
+                    <li><strong>Dengeleyici İşlem (Hedge):</strong> Ana olasılık gerçekleşmezse kaybınızı azaltmak veya kâr elde etmek için yaptığınız karşı yatırım. Birden fazla dengeleyici senaryo ekleyebilirsiniz.</li>
+                    <li><strong>ROI (Return on Investment):</strong> Yatırım Getirisi. Harcadığınız toplam paraya göre ne kadar kâr veya zarar ettiğinizi yüzde olarak gösterir.</li>
+                </ul>
+
+                <h4>Akıllı Araçlar</h4>
+                <p>Bu araçlar, seçtiğiniz bir dengeleyici senaryonun veya tüm dengeleyicilerin yatırım tutarını sizin için otomatik olarak hesaplar.</p>
+                <ul>
+                    <li><strong>Hedefe Git:</strong> Dengeleyici işlemden ne kadar net kâr istediğinizi girin, gereken yatırım tutarını sizin için hesaplasın.</li>
+                    <li><strong>Riski Sıfırla:</strong> Dengeleyici işlem başarılı olursa ana yatırımınızı kurtaracak (ne kâr ne zarar) minimum tutarı hesaplar.</li>
+                    <li><strong>Kârı Eşitle:</strong> Ana olasılık ile seçili senaryo arasında kârı eşitler.</li>
+                </ul>
+
+                <h4>Bütçe Planlayıcı</h4>
+                <p>Toplamda ne kadar harcamak istediğinizi girin. Araç, bu bütçeyi tüm olasılıklara dağıtarak her senaryoda size eşit ve garantili bir kâr sağlayacak yatırım dağılımını önerir.</p>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <header class="site-header reveal fade-in-down">
+            <div class="header-top">
+                <button id="help-btn" class="header-action-btn"><i class="fas fa-question-circle"></i> Nasıl Çalışır?</button>
+                <img src="logo.png" alt="CapX Logosu" class="site-logo">
+                <button id="theme-toggle-btn" class="header-action-btn"><i class="fas fa-sun"></i></button>
+            </div>
+            <h1>Gelişmiş Risk Yönetimi Hesaplayıcı</h1>
+            <p class="subtitle">Çoklu senaryoları dengeleyerek riski yönetin ve fırsatları keşfedin.</p>
+        </header>
+
+        <div class="calculator-grid">
+            <section class="calculator-card reveal fade-in-left">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-line card-icon"></i> Ana Olasılık Bilgileri</h3>
+                </div>
+                <div class="card-content">
+                    <div class="input-group">
+                        <label for="main-odds">Olasılık Oranı</label>
+                        <input type="number" id="main-odds" placeholder="Örn: 3.5" autocomplete="off">
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="main-stake">Yatırım Tutarı (₺)</label>
+                        <input type="number" id="main-stake" placeholder="Örn: 1000" autocomplete="off">
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="info-display">
+                        <span>Potansiyel Getiri:</span>
+                        <span id="potential-payout">0.00 ₺</span>
+                    </div>
+                </div>
+            </section>
+
+            <div id="scenarios-container">
+                </div>
+        </div>
+        
+        <button id="add-scenario-btn" class="action-btn-full reveal fade-in-up"><i class="fas fa-plus-circle"></i> Yeni Senaryo Ekle</button>
+
+        <section id="smart-tools-card" class="calculator-card reveal fade-in-up">
+             <div class="card-header">
+                <h3><i class="fas fa-magic-wand-sparkles card-icon"></i> Akıllı Araçlar</h3>
+            </div>
+            <div class="card-content">
+                 <p class="card-description">Aşağıdaki araçlar, hedef senaryonun yatırım tutarını sizin için otomatik olarak doldurur.</p>
+                <div class="input-group">
+                    <label for="target-scenario-selector">Hedef Senaryo</label>
+                    <select id="target-scenario-selector">
+                        <option value="all">Tüm Dengeleyiciler</option>
+                        </select>
+                </div>
+                 <div class="input-group">
+                    <label for="central-target-profit">Hedef Net Kâr (Hedefe Git için)</label>
+                    <input type="number" id="central-target-profit" placeholder="Örn: 500" value="1000">
+                </div>
+                <div class="smart-tools-container">
+                    <div class="smart-tool-row">
+                        <p class="tool-description">Belirttiğiniz net kârı garantilemek için gereken tutarı hesaplar.</p>
+                        <button id="central-target-btn" class="action-btn"><i class="fas fa-flag-checkered"></i> Hedefe Git</button>
+                    </div>
+                     <div class="smart-tool-row">
+                        <p class="tool-description">Ana yatırımı kurtaracak (başa baş) minimum tutarı hesaplar.</p>
+                        <button id="central-breakeven-btn" class="action-btn"><i class="fas fa-equals"></i> Riski Sıfırla</button>
+                    </div>
+                     <div class="smart-tool-row">
+                        <p class="tool-description">Ana olasılık ile seçili senaryo(lar) arasında kârı eşitler.</p>
+                        <button id="central-arbitrage-btn" class="action-btn"><i class="fas fa-balance-scale"></i> Kârı Eşitle</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="calculator-card budget-planner-card reveal fade-in-up">
+            <div class="card-header">
+                <h3><i class="fas fa-calculator card-icon"></i> Bütçe Planlayıcı</h3>
+            </div>
+            <div class="card-content">
+                <p class="card-description">Toplam bütçenizi girin, araç bu bütçeyi tüm oranlara göre her senaryoda eşit kâr sağlayacak şekilde dağıtsın.</p>
+                <div class="smart-calc-group">
+                    <div class="input-group target-profit-group">
+                        <label for="total-budget">Toplam Bütçe</label>
+                        <input type="number" id="total-budget" placeholder="Örn: 2000">
+                    </div>
+                    <button id="distribute-budget-btn" class="action-btn">
+                        <i class="fas fa-sitemap"></i> Bütçeyi Dağıt
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="results-section" class="results-card reveal fade-in-up" style="display: none;">
+            <div id="summary-info" class="summary-info"></div>
+            <div id="results-grid" class="results-grid">
+                </div>
+            <div class="results-footer">
+                <div class="total-spend-info">
+                    Toplam Çıktı: <span id="total-spend">0.00 ₺</span>
+                </div>
+            </div>
+            <div id="results-summary-details">
+                </div>
+        </section>
+        
+        <footer class="site-footer reveal fade-in-up">
+            <div class="footer-content">
+                <p><strong>Yasal Uyarı ve Kullanım Koşulları:</strong> Bu web sitesi, yalnızca matematiksel hesaplamalar ve finansal senaryo simülasyonları yapmak için tasarlanmış bir araçtır. Sunulan bilgiler ve hesaplama sonuçları, herhangi bir yatırım, finansal veya yasal tavsiye niteliği taşımaz. Bu aracı kullanarak yapılan işlemlerin ve alınan kararların sonuçları tamamen kullanıcının kendi sorumluluğundadır. Simülasyonlar ve hesaplamalar, gerçek dünya piyasa koşullarını tam olarak yansıtmayabilir. Olası finansal kayıplar da dahil olmak üzere, bu aracın kullanımından kaynaklanabilecek doğrudan veya dolaylı hiçbir zarardan CapX sorumlu tutulamaz. Kullanıcılar, kendi yerel yasa ve yönetmeliklerine uymakla yükümlüdür.</p>
+                <p class="developer-credit">Bir <a href="https://CapX.com.tr" target="_blank">CapX</a> Geliştirmesidir.</p>
+            </div>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
