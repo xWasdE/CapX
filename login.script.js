@@ -5,8 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorMessage = document.getElementById('error-message');
 
     // Eğer kullanıcı zaten giriş yapmışsa ve login sayfasına geri dönerse, ana sayfaya yönlendir
+    // Bu satır da calculator.html olarak güncellendi
     if (sessionStorage.getItem('isAuthenticated') === 'true') {
-        window.location.href = 'index.html';
+        window.location.href = 'calculator.html';
     }
 
     loginForm.addEventListener('submit', (event) => {
@@ -15,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const userId = userIdInput.value.trim();
         const password = passwordInput.value.trim();
 
-        // --- KİMLİK BİLGİLERİ KONTROLÜ GÜNCELLENDİ ---
+        // Kimlik bilgilerini kontrol et
         const isAdmin = userId === 'admin99' && password === '1720xXx';
         const isTestUser = userId === 'test00' && password === 'test69';
 
@@ -24,8 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
             errorMessage.textContent = '';
             // Oturum için bir bayrak ayarla
             sessionStorage.setItem('isAuthenticated', 'true');
-            // Ana sayfaya yönlendir
+            
+            // --- HATA BURADAYDI, DÜZELTİLDİ ---
+            // Ana sayfaya (hesap makinesine) yönlendir
             window.location.href = 'calculator.html';
+
         } else {
             // Başarısız giriş
             errorMessage.textContent = 'Kullanıcı ID veya parola hatalı.';
@@ -35,5 +39,4 @@ document.addEventListener('DOMContentLoaded', () => {
             userIdInput.focus();
         }
     });
-
 });
