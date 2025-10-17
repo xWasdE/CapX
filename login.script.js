@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Oturum için bir bayrak ayarla
             sessionStorage.setItem('isAuthenticated', 'true');
             // Ana sayfaya yönlendir
-            window.location.href = 'index.html';
+            window.location.href = 'calculator.html';
         } else {
             // Başarısız giriş
             errorMessage.textContent = 'Kullanıcı ID veya parola hatalı.';
@@ -35,4 +35,5 @@ document.addEventListener('DOMContentLoaded', () => {
             userIdInput.focus();
         }
     });
+
 });
