@@ -20,7 +20,7 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    overflow: hidden;
+    overflow-x: hidden; /* Yatay kaydırmayı engellemek için önemli */
 }
 
 .container {
@@ -29,6 +29,7 @@ body {
     flex-direction: column;
     align-items: center;
     animation: fadeIn 2s ease-in-out;
+    width: 100%; /* Konteynerin ekranı doldurmasını sağlar */
 }
 
 .logo {
@@ -142,32 +143,58 @@ body {
 .clouds { background: transparent url(http://www.script-tutorials.com/demos/360/images/clouds.png) repeat top center; z-index: 2; animation: move-clouds-back 200s linear infinite; opacity: .4; }
 
 
-/* --- Mobil Uyumluluk Kodları --- */
-@media (max-width: 600px) {
-    .container {
-        padding: 0 20px; /* İçeriğin kenarlara yapışmasını engeller */
-    }
+/* --- YENİ VE GÜNCELLENMİŞ MOBİL UYUMLULUK KODLARI --- */
 
+/* Genel Mobil Cihazlar (Tabletler ve büyük telefonlar) */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 25px; /* Kenar boşluğunu biraz artırıyoruz */
+    }
+    
     .title {
-        font-size: 2.2rem; /* Başlık fontunu küçültür */
-        letter-spacing: 2px; /* Harf aralığını azaltır */
+        font-size: 2.5rem;
+        letter-spacing: 3px;
+    }
+}
+
+
+/* Standart Telefonlar (iPhone 13/14/15 Pro vb.) */
+@media (max-width: 600px) {
+    .title {
+        font-size: 2.1rem; /* Başlık fontunu küçültüyoruz */
+        letter-spacing: 2px;
     }
 
     .subtitle {
-        font-size: 1.1rem; /* Alt başlığı küçültür */
+        font-size: 1.05rem; /* Alt başlığı küçültüyoruz */
     }
 
     .logo {
-        width: 120px; /* Logoyu biraz küçültür */
+        width: 110px; /* Logoyu biraz daha küçültüyoruz */
         margin-bottom: 30px;
     }
 }
 
-@media (max-width: 380px) {
+/* Daha Küçük Telefonlar (iPhone SE, Pixel 4a vb.) */
+@media (max-width: 420px) {
      .title {
-        font-size: 1.8rem; /* Çok küçük ekranlar için daha da küçültür */
+        font-size: 1.7rem; /* Başlığı daha da küçültüyoruz */
+        letter-spacing: 1px; /* Harf aralığını azaltıyoruz */
     }
     .subtitle {
-        font-size: 1rem;
+        font-size: 0.95rem;
+    }
+    .message {
+        margin-top: 40px;
+    }
+}
+
+/* En Küçük Ekranlar */
+@media (max-width: 360px) {
+     .title {
+        font-size: 1.5rem; /* Yazının taşmasını kesin engellemek için son ayar */
+    }
+    .subtitle {
+        font-size: 0.9rem;
     }
 }
