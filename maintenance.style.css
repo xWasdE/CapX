@@ -140,3 +140,34 @@ body {
 .stars { background: #000 url(http://www.script-tutorials.com/demos/360/images/stars.png) repeat top center; z-index: 0; }
 .twinkling { background: transparent url(http://www.script-tutorials.com/demos/360/images/twinkling.png) repeat top center; z-index: 1; animation: move-twink-back 200s linear infinite; }
 .clouds { background: transparent url(http://www.script-tutorials.com/demos/360/images/clouds.png) repeat top center; z-index: 2; animation: move-clouds-back 200s linear infinite; opacity: .4; }
+
+
+/* --- Mobil Uyumluluk Kodları --- */
+@media (max-width: 600px) {
+    .container {
+        padding: 0 20px; /* İçeriğin kenarlara yapışmasını engeller */
+    }
+
+    .title {
+        font-size: 2.2rem; /* Başlık fontunu küçültür */
+        letter-spacing: 2px; /* Harf aralığını azaltır */
+    }
+
+    .subtitle {
+        font-size: 1.1rem; /* Alt başlığı küçültür */
+    }
+
+    .logo {
+        width: 120px; /* Logoyu biraz küçültür */
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 380px) {
+     .title {
+        font-size: 1.8rem; /* Çok küçük ekranlar için daha da küçültür */
+    }
+    .subtitle {
+        font-size: 1rem;
+    }
+}
